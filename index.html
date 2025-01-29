@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Page title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, shrink-to-fit=no"
+		/>
+    <style media="screen">
+      html {height: 100%;width:100%;margin: 0px;padding: 0px;background-color: gray;}
+      body {height: 100%;width:100%;margin: 0px;padding: 0px;background-color: gray;}
+      .home {height: 95%;width:100%;margin: 0px;padding: 0px;display: block;background: gray;}
+      .btns {background-image: linear-gradient(white 50%, gray 50%);width: 100%;height: 20%;display: flex;margin: 0px;padding: 0px;}
+      .btns input {height: 100%;width: 50%;margin: 0px;}
+      .schbtn {border-radius: 20px;border: none;background: white;color: black;font-size: 22px;margin: 0px;padding: 0px;}
+      .acschbtn {border-radius: 20px 20px 0px 0px;border: none;background: gray;color: white;font-size: 22px;margin: 0px;padding: 0px;}
+      .schbtn:hover {background-color: rgb(222,222,222);}
+      .container {width: 100%;height: 80%;background-color: gray;margin: 0px;padding: 0px;}
+      .container div {width: 100%;height: 100%;margin: 0px;}
+      .yption {display: flex;justify-content: center;}
+      .yption input {display: block;padding: 5px;margin: 5px;max-height: 25px;}
+      #decryption {display: none;}
+      #encryption {display: grid;justify-content: center;}
+      .solvebtn {background-color: white; border-radius: 15px;color: black;border:1px solid black;font-size: 17px;display: block;padding: 24px;margin: auto;width: 100px;height: 50px;}
+      .solvebtn:hover {background-color: rgb(222,222,222);color: red;border:1px solid red;}
+      @media screen and (max-width: 800px) {
+        .home {height: 95%;width:100%;margin: 0px;padding: 0px;display: block;background: gray;}
+        .btns {background-image: linear-gradient(white 50%, gray 50%);width: 100%;height: 5%;display: flex;margin: 0px;padding: 0px;}
+        .btns input {height: 100%;width: 50%;margin: 0px;}
+        .schbtn {border-radius: 20px;border: none;background: white;color: black;font-size: 22px;margin: 0px;padding: 0px;}
+        .acschbtn {border-radius: 20px 20px 0px 0px;border: none;background: gray;color: white;font-size: 22px;margin: 0px;padding: 0px;}
+        .schbtn:hover {background-color: rgb(222,222,222);}
+        .container {width: 100%;height: 95%;background-color: gray;margin: 0px;padding: 0px;}
+        .container div {width: 100%;height: 100%;margin: 0px;}
+        .yption {display: grid;justify-content: center;}
+        .yption input {display: block;padding: 5px;margin: 5px;max-height: 25px;}
+        #decryption {display: none;}
+        #encryption {display: grid;justify-content: center;}
+        .solvebtn {background-color: white; border-radius: 15px;color: black;border:1px solid black;font-size: 17px;display: block;padding: 24px;margin: auto;width: 100px;height: 50px;}
+        .solvebtn:hover {background-color: rgb(222,222,222);color: red;border:1px solid red;}
+      }
+    </style>
+</head>
+<body>
+  <div class="home">
+    <div class="btns">
+      <input id="enbtn" class="acschbtn" type="button" value="Encryption" onclick="funswtch(0)">
+      <input id="debtn" class="schbtn" type="button" value="Decryption" onclick="funswtch(1)">
+    </div>
+    <div class="container">
+      <div id="encryption">
+          <div class="yption">
+            <p style="font-size:30px;color:white;">Encryption</p>
+          </div>
+          <div class="yption">
+            <input type="text" id="ielem">
+            <input type="number" id="snumb" value="2">
+          </div>
+          <div class="yption">
+            <input class="solvebtn" type="button" onclick="encrypts()" value="encrypt">
+          </div>
+          <div class="yption">
+            <input type="text" id="pelem">
+          </div>
+      </div>
+      <div id="decryption">
+        <div class="yption">
+          <p style="font-size:30px;color:white;">Decryption</p>
+        </div>
+        <div class="yption">
+          <input type="text" id="xelem" value="">
+          <input type="number" id="snumbz" value="2">
+        </div>
+        <div class="yption">
+          <input class="solvebtn" type="button" onclick="decrypt()" value="decrypt">
+        </div>
+        <div class="yption">
+          <input type="text" id="yelem">
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+    // encryption engine
+    function funswtch(nm) {
+      if (nm == 0) {
+        document.getElementById('encryption').style.display = "grid";
+        document.getElementById('decryption').style.display = "none";
+        document.getElementById('enbtn').removeAttribute('class');
+        document.getElementById('debtn').removeAttribute('class');
+        document.getElementById('enbtn').setAttribute('class', 'acschbtn');
+        document.getElementById('debtn').setAttribute('class', 'schbtn');
+      }
+      else {
+        document.getElementById('encryption').style.display = "none";
+        document.getElementById('decryption').style.display = "grid";
+        document.getElementById('enbtn').removeAttribute('class');
+        document.getElementById('debtn').removeAttribute('class');
+        document.getElementById('enbtn').setAttribute('class', 'schbtn');
+        document.getElementById('debtn').setAttribute('class', 'acschbtn');
+      }
+    }
+    function encrypts() {
+        var character = "abcdefghijklmnopqrstuvwxyz-+×÷";
+        var tempchara = {};
+        let shiftamount = eval(document.getElementById("snumb").value);
+        var sent = document.getElementById("ielem").value;
+        // convert sentence into array
+        chararray = character.split("");
+        // get new characters array
+        let y;
+        if (shiftamount >= 0) {
+          for (let i = 0; i < chararray.length ; i++) {
+              y = i + shiftamount;
+              if (y >= chararray.length) {
+                  y = y - chararray.length;
+              }
+              tempchara[chararray[i]] = chararray[y];
+          }
+        }
+        else {
+          for (let i = 0; i < chararray.length ; i++) {
+            let j = i + shiftamount;
+            if (j <= 0) {
+              y  = chararray.length + shiftamount + i;
+            }
+            else {
+              y  = ( i + shiftamount);
+            }
+            tempchara[chararray[i]] = chararray[y];
+          }
+        }
+
+        //console.log(chararray)
+        //console.log(tempchara)
+        //return;
+        // encrypting area
+        var sentarray = sent.split('');
+        for (let i = 0; i < sentarray.length; i++) {
+            if (sentarray[i] != ' ') {
+                sentarray[i] = tempchara[sentarray[i]];
+            }
+        }
+        sent = "";
+        for (let i = 0; i < sentarray.length; i++) {
+            sent += sentarray[i];
+        }
+        // exporting results
+        document.getElementById("pelem").value = sent;
+    }
+    function decrypt() {
+        var character = "abcdefghijklmnopqrstuvwxyz-+×÷";
+        var tempchara = {};
+        let shiftamount = eval(document.getElementById("snumbz").value);
+        var sent = document.getElementById("xelem").value;
+        if (sent == "") {
+            sent = document.getElementById("pelem").value;
+        }
+        // convert sentence into array
+        chararray = character.split("");
+        // get new characters array
+        if (shiftamount >= 0) {
+          for (let i = 0; i < chararray.length ; i++) {
+              let y = i + shiftamount;
+              if (y >= chararray.length) {
+                  y = y - chararray.length;
+              }
+              tempchara[chararray[y]] = chararray[i];
+              //tempchara[i] = chararray[y];
+          }
+        }
+        else {
+          for (let i = 0; i < chararray.length ; i++) {
+            let j = i + shiftamount;
+            if (j <= 0) {
+              y  = chararray.length + shiftamount + i;
+            }
+            else {
+              y  = ( i + shiftamount);
+            }
+            tempchara[chararray[y]] = chararray[i];
+          }
+        }
+        // encrypting area
+        for (let i = 0; i < chararray.length ; i++) {
+            sent.replaceAll(tempchara[chararray[i]], chararray[i]);
+        }
+        var sentarray = sent.split('');
+        for (let i = 0; i < sentarray.length; i++) {
+            if (sentarray[i] != ' ') {
+                sentarray[i] = tempchara[sentarray[i]];
+            }
+        }
+        sent = "";
+        for (let i = 0; i < sentarray.length; i++) {
+            sent += sentarray[i];
+        }
+        // exporting results
+        document.getElementById("yelem").value = sent;
+    }
+</script>
+</html>
